@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1584037219 source:c:\users\pet_user\documents\c\tad aluno\main.c
+	<stdio.h>
+	<stdlib.h>
+	"aluno.c"
+
+1584037123 c:\users\pet_user\documents\c\tad aluno\aluno.c
+	<stdio.h>
+	<stdlib.h>
+	"aluno.h"
+
+1584034697 c:\users\pet_user\documents\c\tad aluno\aluno.h
+
