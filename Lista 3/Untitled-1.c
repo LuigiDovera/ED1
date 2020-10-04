@@ -3,7 +3,6 @@
 #include <math.h>
 
 int comparaInt(void *arg1, void *arg2){
-    printf("aa");
     if( *((int*)arg1) <  *((int*)arg2) ){
             return 0;
         }else if( *((int*)arg1) == *((int*)arg2) ){
@@ -29,15 +28,15 @@ void recebeInt(void *arg1, void*arg2){
 }
 
 void recebeFloat(void *arg1, void*arg2){
-    *((float*)arg1) = *((float*)arg1);
+    *((float*)arg1) = *((float*)arg2);
 }
 
-void alocaInt(void *arg1){
-    arg1 = (int *) malloc(sizeof(int *));
+void alocaInt(void **arg1){
+    *arg1 = (int *) malloc(sizeof(int *));
 }
 
-void alocaFloat(void *arg1){
-    arg1 = (float *) malloc(sizeof(float *));
+void alocaFloat(void **arg1){
+    *arg1 = (float *) malloc(sizeof(float *));
 }
 
 
@@ -46,23 +45,28 @@ void quicksort (void **vetor, int esq, int dir,
         void (*aloca)(void *)){
     int i, j, z;
     void *x, *y;
-    aloca(x);
-    aloca(y);
+    aloca(&x);
+    aloca(&y);
 
-    printf("aa");
+    
     i = esq;
     j = dir;
     z = (int) floor((esq + dir)/2);
+    
     recebe(x, vetor[z]);
+    
 
     while(i<=j){
+        
         while (compara(vetor[i], x) == 0 && i < dir){
             i++;
+            
         }
         while (compara(vetor[j], x) == 2 && j > esq){
-            j++;
+            j--;
+            
         }
-        printf("aa");
+        
         if(i<=j){
             recebe(y, vetor[i]);
             recebe(vetor[i], vetor[j]);
@@ -83,13 +87,6 @@ void quicksort (void **vetor, int esq, int dir,
 }
 
 
-/*
-int a(int (*compara)(int, void*, void*)){
-    int a=2, b=2;
-    void *pa=&a, *pb=&b;
-    return compara(1, pa, pb);
-}
-*/
 
 int main(){
 
@@ -118,26 +115,32 @@ int main(){
     scanf("%d", &n);
     
 
-
-    
-    n=4;
     v = (void **) malloc(n*sizeof(void *));
     
     for(int i=0; i<n; i++){
-        v[i] = (int *) malloc(sizeof(int *));
-        //*((int*)v[i]) = i;
+        aloc(&v[i]);
+        void *rando;
+        aloc(&rando);
+        (*(int*)rando) = (int*) (rand() % 100);
+        
+        rec(v[i], rando);
+        printf("%d ", *((int*)v[i]));
     }
+    printf("\n");
+
+    /*
     *((int*)v[0]) = 3;
     *((int*)v[1]) = 1;
     *((int*)v[2]) = 0;
     *((int*)v[3]) = 2;
+    */
 
     quicksort(v, 0, n-1, comp, rec, aloc);
     
-    printf("a");
     for(int i=0; i<n; i++){
-        printf("%d", *((int*)v[i]));
+        printf("%d ", *((int*)v[i]));
     }
+    printf("\n");
     
 
     //int a=1, b=2;
