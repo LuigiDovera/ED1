@@ -33,10 +33,20 @@ void recebeFloat(void *arg1, void*arg2){
 
 void alocaInt(void **arg1){
     *arg1 = (int *) malloc(sizeof(int *));
+    if (*arg1==NULL){
+        exit(1);
+    }
 }
 
 void alocaFloat(void **arg1){
     *arg1 = (float *) malloc(sizeof(float *));
+    if (*arg1==NULL){
+        exit(1);
+    }
+}
+
+void freeDupla(void **arg1){
+    free(*arg1);
 }
 
 
@@ -83,6 +93,10 @@ void quicksort (void **vetor, int esq, int dir,
         quicksort(vetor, i, dir, compara, recebe, aloca);
     }
 
+    freeDupla(&x);
+    free(x);
+    freeDupla(&y);
+    free(y);
 
 }
 
@@ -116,38 +130,46 @@ int main(){
     
 
     v = (void **) malloc(n*sizeof(void *));
+    if (v==NULL){
+        exit(1);
+    }
     
     for(int i=0; i<n; i++){
         aloc(&v[i]);
+        if (v[i]==NULL){
+            exit(1);
+        }
         void *rando;
         aloc(&rando);
-        (*(int*)rando) = (int*) (rand() % 100);
+        if (rando==NULL){
+            exit(1);
+        }
+        if(tipo==1){
+            *((int*)rando) = (int) (rand() % 100);
+        }else{
+            *((float*)rando) = (float) (rand()/10);
+        }
         
         rec(v[i], rando);
+
+        free(rando);
         printf("%d ", *((int*)v[i]));
     }
     printf("\n");
 
-    /*
-    *((int*)v[0]) = 3;
-    *((int*)v[1]) = 1;
-    *((int*)v[2]) = 0;
-    *((int*)v[3]) = 2;
-    */
-
     quicksort(v, 0, n-1, comp, rec, aloc);
-    
+
     for(int i=0; i<n; i++){
         printf("%d ", *((int*)v[i]));
     }
     printf("\n");
-    
 
-    //int a=1, b=2;
-    //void *pa=&a, *pb=&b;
-    
-    //int (*compar)(int, void*, void*) = &compara;
-    //printf("%d", a(compara));
+    system("Pause");
+
+    for(int i=0; i<n; i++){
+        free(v[i]);
+    }
+    free(v);
 
     return 0;
 }
