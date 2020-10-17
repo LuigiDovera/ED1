@@ -3,7 +3,7 @@
 #define TRUE 1
 #define FALSE 0
 
-int tipoDeMatriz(int *va int m, int n){
+int tipoDeMatriz(int *va, int m, int n){
     int aux=0;
     if(m==n){
         for(int i=0; i<m; i++){
