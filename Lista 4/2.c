@@ -4,21 +4,23 @@
 
 #include "stack.h"
 
-int inversivel(char str[]);
+int ehPalindromo(char str[]);
 
 int main()
 {
     char str1[] = "ABCBA";
-    char str2[] = "ACAB";
-    char str3[] = "ABCA";
-    char str4[] = "ABCAA";
+    char str2[] = "ABBA";
+    char str3[] = "ABB";
+    char str4[] = "AB";
 
-    printf("%d %d %d %d\n", inversivel(str1), inversivel(str2), inversivel(str3), inversivel(str4));
+    printf("%d %d %d %d\n", ehPalindromo(str1), ehPalindromo(str2), ehPalindromo(str3), ehPalindromo(str4));
+
+    printf("%d\n", 3/2);
 
     system("pause");
 }
 
-int inversivel(char str[])
+int ehPalindromo(char str[])
 {
 
     Stack *s = NULL;
@@ -32,11 +34,16 @@ int inversivel(char str[])
 
     for (int i = 0; i < strlen(str); i++)
     {      
-        
-        if (str[i] == 'C')
+        if (i == strlen(str)/2 && strlen(str)%2==0)
+        {
+            push = FALSE;
+            
+        }
+        else if (i == strlen(str)/2 && strlen(str)%2==1)
         {
             push = FALSE;
             i++;
+
         }
         
         if (push)
@@ -51,9 +58,13 @@ int inversivel(char str[])
         }
         else
         {   
-            contPop++;  
-            pch = stkPop(s) ;
-            if (!stkIsEmpty(s) && *(char *)pch != str[i])
+            
+            pch = stkPop(s);
+            if (*(char *)pch == str[i])
+            {   
+                contPop++;  
+            }
+            else
             {
                 return FALSE;
             }

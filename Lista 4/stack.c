@@ -84,7 +84,7 @@ int stkIsEmpty(Stack *s)
 {
     if (s != NULL)
     {
-        if (s->top == -1)
+        if (s->top < 0)
         {
             return TRUE;
         }
