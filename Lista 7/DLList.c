@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "DLList.h"
+#include <stdio.h>
 
 typedef struct _DLNode_
 {
@@ -7,7 +8,7 @@ typedef struct _DLNode_
     void *data;
 } DLNode;
 
-typedef struct _dllist_
+typedef struct _DLList_
 {
     DLNode *first;
     DLNode *cur;
@@ -31,8 +32,7 @@ int dllDestroy(DLList *l)
 {
     if (l != NULL)
     {
-        if (l
-                ->first == NULL)
+        if (l->first == NULL)
         {
             free(l);
             return TRUE;
@@ -52,26 +52,15 @@ int dllInsertAsFirst(DLList *l, void *data)
             newnode->data = data;
             newnode->prev = NULL;
             newnode->next = l->first;
-            first = l->first;
-            if (first != NULL)
+            if (l->first != NULL)
             {
-                first->prev = newnode;
+                l->first->prev = newnode;
             }
             l->first = newnode;
             return TRUE;
         }
     }
     return FALSE;
-}
-
-int dllInsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void *))
-{
-    if (l != NULL)
-    {
-        if (key != NULL)
-        {
-        }
-    }
 }
 
 int dllInsertBeforeSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void *))
@@ -88,19 +77,17 @@ int dllInsertBeforeSpec(DLList *l, void *key, void *data, int (*cmp)(void *, voi
             if (key != NULL)
             {
                 node = l->first;
-                if (cmp(l->first->data, key))
+                if (cmp(node->data, key))
                 {
-                    nodeKey = l->first;
-                    nodekey->prev = newnode;
-
-                    l->first = newnode;
-
+                    newnode->next = l->first;
                     newnode->prev = NULL;
-                    newnode->next = nodeKey;
+
+                    l->first->prev = newnode;
+                    l->first = newnode;
 
                     return TRUE;
                 }
-
+                
                 //Procurar o nó com dado igual a chave
                 while (node->next != NULL && cmp(node->next->data, key) != TRUE)
                 {
@@ -126,9 +113,9 @@ int dllInsertBeforeSpec(DLList *l, void *key, void *data, int (*cmp)(void *, voi
     return FALSE;
 }
 
-dllINsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void *))
+int dllInsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void *))
 {
-    DLNode *node, *nodeKey;
+    DLNode *node;
     DLNode *newnode = (DLNode *)malloc(sizeof(DLNode));
 
     newnode->data = data;
@@ -139,14 +126,28 @@ dllINsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void *))
             if (key != NULL)
             {
                 node = l->first;
-                while (node != NULL && cmp(key, node > data) != TRUE)
+                while (node != NULL && cmp(key, node -> data) != TRUE)
                 {
-                    node = node -> next;
+                    node = node->next;
                 }
-                if (cmp(key, node -> data) == TRUE)
+                if (cmp(key, node->data) == TRUE)
                 {
-                    newnode->next = node->next;
-                    node->next = newnode;
+                    if (node->next == NULL)
+                    {
+                        newnode->prev = node;
+                        newnode->next = NULL;
+
+                        node->next = newnode;
+                    }
+                    else
+                    {
+                        newnode->next = node->next;
+                        newnode->prev = node;
+
+                        node->next->prev = newnode;
+                        node->next = newnode;
+                        
+                    }
                     return TRUE;
                 }
             }
@@ -155,3 +156,18 @@ dllINsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void *))
     free(newnode);
     return FALSE;
 }
+
+void dllPrint(DLList *l, void (*print)(void *))
+{
+    DLNode *node;
+    if (l != NULL)
+    {
+        node = l->first;
+        while (node != NULL)
+        {
+            print(node->data);
+            node = node->next;
+        }
+    }
+}
+
