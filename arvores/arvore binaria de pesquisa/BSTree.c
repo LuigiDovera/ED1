@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "BSTree.h"
 
 typedef struct _tnode_
@@ -44,9 +45,11 @@ void Simetrico(TNode *t, void (*visit)(void *))
     }
 }
 
-TNode *abpCreate(TNode *t, void *data){
+TNode *abpCreate(TNode *t, void *data)
+{
     t = (TNode *)malloc(sizeof(TNode));
-    if (t!=NULL){
+    if (t != NULL)
+    {
         t->data = data;
         t->right = NULL;
         t->left = NULL;
@@ -89,11 +92,11 @@ TNode *abpInsert(TNode *t, void *data, int (*cmp)(void *, void *))
         stat = cmp(data, t->data);
         if (stat <= 0)
         {
-            t->left = abpInsert(t, data, cmp);
+            t->left = abpInsert(t->left, data, cmp);
         }
         else
         {
-            t->right = abpInsert(t, data, cmp);
+            t->right = abpInsert(t->right, data, cmp);
         }
         return t;
     }
@@ -114,34 +117,42 @@ TNode *abpInsert(TNode *t, void *data, int (*cmp)(void *, void *))
     }
 }
 
-TNode *abpRemove(TNode *t, void *key, int (*cmp)(void *, void *), void *data){
+TNode *abpRemove(TNode *t, void *key, int (*cmp)(void *, void *), void *data)
+{
     void *data2;
     TNode *aux;
     int stat;
-    if(t!=NULL){
+    if (t != NULL)
+    {
         stat = cmp(data, t->data);
-        if(stat<0){
+        if (stat < 0)
+        {
             t->left = abpRemove(t->left, key, cmp, &data2);
             return t;
         }
-        else if(stat>0){
-            t->right = abpRemove(t->left, key, cmp, &data2);
+        else if (stat > 0)
+        {
+            t->right = abpRemove(t->right, key, cmp, &data2);
             return t;
         }
-        else{
-            if(t->left==NULL){
+        else
+        {
+            if (t->left == NULL)
+            {
                 aux = t->right;
                 data = t->data;
                 free(t);
                 return aux;
             }
-            else if(t->right==NULL){
+            else if (t->right == NULL)
+            {
                 aux = t->left;
                 data = t->data;
                 free(t);
                 return aux;
             }
-            else{
+            else
+            {
                 data = t->data;
                 t->right = abpRemoveMenor(t->right, key, cmp, data2);
                 return t;
@@ -152,14 +163,29 @@ TNode *abpRemove(TNode *t, void *key, int (*cmp)(void *, void *), void *data){
     return NULL;
 }
 
-TNode *abpRemoveMenor(TNode *t, void *key, int (*cmp)(void *, void *), void *data){
+TNode *abpRemoveMenor(TNode *t, void *key, int (*cmp)(void *, void *), void *data)
+{
     void *data2;
-    if(t->left==NULL){
+    if (t->left == NULL)
+    {
         data2 = t->data;
         free(t);
         return NULL;
     }
-    else{
+    else
+    {
         return abpRemoveMenor(t->right, key, cmp, data);
     }
 }
+
+void *abpMaiorNo(TNode *t)
+{
+    if (t != NULL)
+    {
+        if (t->right != NULL)
+        {
+            return abpMaiorNo(t->right);
+        }
+        return t->data;
+    }
+}   

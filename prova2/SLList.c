@@ -209,27 +209,3 @@ void sllPrint(SLList *l, void (*print)(void *))
         }
     }
 }
-
-int Comuns(SLList *l1, void *key, int(cmp)(void *, void *))
-{
-    SLNode *cur;
-    int n = 0;
-    if (l1 != NULL)
-    {
-        if (l1->first != NULL)
-        {
-            cur = l1->first;
-            do
-            {
-                if (cmp(cur->data, key) == TRUE)
-                {
-                    n++;
-                }
-                cur = cur->next;
-            } while (cur != l1->first);
-            return n;
-        }
-        return 0;
-    }
-    return -1;
-}

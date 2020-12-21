@@ -17,5 +17,6 @@ void *abpQuery(TNode *t, void *key, int (*cmp)(void *, void *));
 TNode *abpInsert(TNode *t, void *data, int(*cmp)(void *, void *));
 TNode *abpRemove(TNode *t, void *key, int (*cmp)(void *, void *), void *data);
 TNode *abpRemoveMenor(TNode *t, void *key, int (*cmp)(void *, void *), void *data);
+void *abpMaiorNo(TNode *t);
 
 #endif

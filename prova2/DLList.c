@@ -87,7 +87,7 @@ int dllInsertBeforeSpec(DLList *l, void *key, void *data, int (*cmp)(void *, voi
 
                     return TRUE;
                 }
-
+                
                 //Procurar o nó com dado igual a chave
                 while (node->next != NULL && cmp(node->next->data, key) != TRUE)
                 {
@@ -126,7 +126,7 @@ int dllInsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void
             if (key != NULL)
             {
                 node = l->first;
-                while (node != NULL && cmp(key, node->data) != TRUE)
+                while (node != NULL && cmp(key, node -> data) != TRUE)
                 {
                     node = node->next;
                 }
@@ -146,6 +146,7 @@ int dllInsertAfterSpec(DLList *l, void *key, void *data, int (*cmp)(void *, void
 
                         node->next->prev = newnode;
                         node->next = newnode;
+                        
                     }
                     return TRUE;
                 }
@@ -170,31 +171,3 @@ void dllPrint(DLList *l, void (*print)(void *))
     }
 }
 
-int Comuns(DLList *l1, DLList *l2, int(cmp)(void *, void *))
-{
-    DLNode *cur1, *cur2;
-    int n = 0;
-    if (l1 != NULL && l2 != NULL)
-    {
-        if (l1->first != NULL & l2->first != NULL)
-        {
-            cur1 = l1->first;
-            do 
-            {
-                cur2 = l2->first;
-                do 
-                {
-                    if (cmp(cur1->data, cur2->data) == 0)
-                    {
-                        n++;
-                    }
-                    cur2 = cur2->next;
-                }while (cur2 != l2->first);
-                cur1 = cur1->next;
-            }while (cur1 != l1->first);
-            return n;
-        }
-        return 0;
-    }
-    return -1;
-}
